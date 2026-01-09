@@ -30,6 +30,18 @@ class AuthController extends Controller
         }
 
         $data = $request->all();
+        $imagePath = null;
+        if ($request->hasFile('profile_picture') && $request->file('profile_picture')->isValid()) {
+            $file = $request->file('profile_picture');
+
+            $fileName = time().'_'.$file->getClientOriginalName();
+
+            $file->move(public_path('/storage/profile'), $fileName);
+            $imagePath = '/storage/profile/'.$fileName;
+        }
+
+        $data['profile_picture'] = $imagePath;
+
         $user = User::create($data);
 
         return response()->json([
