@@ -74,4 +74,27 @@ class AuthController extends Controller
             ], 400);
         }
     }
+
+    // Profile API
+    public function profile()
+    {
+        $user = Auth::user();
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $user,
+        ], 200);
+    }
+
+    // Logout API
+    public function logout()
+    {
+        $user = Auth::user();
+        $user->tokens()->delete();
+
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logged out successfully',
+        ], 200);
+    }
 }
